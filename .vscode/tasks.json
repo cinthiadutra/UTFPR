@@ -2,8 +2,8 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: gcc-15 arquivo de build ativo",
-            "command": "/opt/homebrew/bin/gcc-15",
+            "label": "C/C++: gcc arquivo de build ativo",
+            "command": "/usr/bin/gcc",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
