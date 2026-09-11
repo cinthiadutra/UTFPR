@@ -1,0 +1,7 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Volumes/cinthiassd/projeto/outros/UTFPR/FDC1/FDP/fdp2/aula15/aula15.2'
+relocations:
+  - { offset: 0x19, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100000560, symSize: 0x6CC }
+  - { offset: 0x19D, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100000560, symSize: 0x6CC }
+...

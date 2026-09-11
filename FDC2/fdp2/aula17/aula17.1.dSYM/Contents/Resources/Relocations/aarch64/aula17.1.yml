@@ -1,0 +1,8 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Volumes/cinthiassd/projeto/outros/UTFPR/FDC2/fdp2/aula17/aula17.1'
+relocations:
+  - { offset: 0x19, size: 0x8, addend: 0x0, symName: _dobrar, symObjAddr: 0x0, symBinAddr: 0x100000560, symSize: 0x28 }
+  - { offset: 0x8D, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x28, symBinAddr: 0x100000588, symSize: 0x6C }
+  - { offset: 0xB7, size: 0x8, addend: 0x0, symName: _dobrar, symObjAddr: 0x0, symBinAddr: 0x100000560, symSize: 0x28 }
+...
