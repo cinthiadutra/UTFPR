@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build desafio1.c",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-g",
+                "${workspaceFolder}/extras/desafio1.c",
+                "-o",
+                "${workspaceFolder}/extras/desafio1"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build desafio1.c com input.txt",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-g",
+                "-DDEBUG_INPUT",
+                "${workspaceFolder}/extras/desafio1.c",
+                "-o",
+                "${workspaceFolder}/extras/desafio1"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Run desafio1.c - digitar numeros",
+            "type": "shell",
+            "command": "${workspaceFolder}/extras/desafio1",
+            "dependsOn": "Build desafio1.c",
+            "options": {
+                "cwd": "${workspaceFolder}/extras"
+            },
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "clear": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}
