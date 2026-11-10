@@ -1,0 +1,26 @@
+id,dificuldade,tema,rodada_inicial,rodada_final,marco_seguranca,rodada_do_milhao,pergunta,alternativa_a,alternativa_b,alternativa_c,alternativa_d,resposta_correta
+1,Muito fácil,Dart,1,2,,,Qual linguagem é usada para escrever apps Flutter?,Kotlin,Dart,Swift,JavaScript,B
+2,Muito fácil,Flutter,1,2,,,Qual widget exibe um texto simples?,Text,Icon,Image,Spacer,A
+3,Muito fácil,Dart,1,2,,,Qual tipo representa verdadeiro ou falso?,int,String,double,bool,D
+4,Muito fácil,Flutter,1,2,,,Qual widget exibe um ícone a partir de um IconData?,Text,Divider,Icon,Scaffold,C
+5,Muito fácil,Dart,1,2,,,Qual tipo representa um número inteiro?,int,bool,double,String,A
+6,Fácil,Flutter,3,4,,,Qual widget organiza seus filhos na vertical?,Row,Stack,Wrap,Column,D
+7,Fácil,Dart,3,4,,,Qual método adiciona um item ao fim de uma lista mutável?,contains,add,remove,join,B
+8,Fácil,Flutter,3,4,,,Qual arquivo declara dependências de um projeto Flutter?,main.dart,analysis_options.yaml,pubspec.yaml,README.md,C
+9,Fácil,Dart,3,4,,,Qual é o valor de null ?? 10?,10,null,false,0,A
+10,Fácil,Flutter,3,4,,,Qual argumento de Scaffold recebe o conteúdo principal da tela?,appBar,drawer,floatingActionButton,body,D
+11,Médio,Dart,5,8,5,,Uma função async retorna o inteiro 42. Qual tipo de retorno explicita corretamente o resultado assíncrono?,int,Stream<int>,Future<int>,Iterable<int>,C
+12,Médio,Flutter,5,8,5,,Qual método de State é chamado uma vez para inicializar cada instância antes do primeiro build?,didUpdateWidget,initState,dispose,deactivate,B
+13,Médio,Dart,5,8,5,,"Qual é o resultado de [1, 2, 3].where((n) => n.isOdd).toList()?","[1, 3]",[2],"[1, 2, 3]","[3, 1]",A
+14,Médio,Flutter,5,8,5,,Qual argumento de ListView.builder recebe a função que cria um widget a partir do índice?,itemCount,padding,controller,itemBuilder,D
+15,Médio,Dart,5,8,5,,O que final impede em final itens = <int>[]?,Adicionar elementos à lista,Atribuir outra lista à variável itens,Ler o conteúdo da lista,Remover elementos da lista,B
+16,Difícil,Flutter,9,12,10,,"Após aguardar um Future, o que verificar antes de usar o BuildContext recebido como parâmetro?",context.hashCode,ModalRoute.of(context)?.isCurrent,context.mounted,context.runtimeType,C
+17,Difícil,Dart,9,12,10,,Qual é a forma típica de enviar mensagens entre isolates usando portas?,Escrever em uma variável global compartilhada,Enviar com SendPort e receber com ReceivePort,Alterar um singleton compartilhado,Usar o mesmo StreamController diretamente nos dois isolates,B
+18,Difícil,Flutter,9,12,10,,"Dentro de uma Row com largura finita, qual widget força o filho a preencher a largura que lhe foi alocada pelo flex?",Flexible com FlexFit.loose,Align,IntrinsicWidth,Expanded,D
+19,Difícil,Dart,9,12,10,,Qual afirmação vale para um Stream de assinatura única após cancelar sua primeira assinatura?,Uma segunda chamada a listen ainda é inválida,Uma nova assinatura sempre recomeça do início,Uma nova assinatura recebe somente eventos futuros,A primeira assinatura passa a funcionar como broadcast,A
+20,Difícil,Flutter,9,12,10,,"Se um State recebe uma nova configuração do mesmo tipo e com a mesma chave, qual método recebe a configuração anterior?",initState,didChangeDependencies,didUpdateWidget,reassemble,C
+21,Muito difícil,Dart,13,15,,15,"Em um isolate, o código executa scheduleMicrotask(() => print('M')), agenda Future(() => print('F')) e depois chama print('S') no mesmo trecho síncrono. Qual é a ordem dessas três impressões?","M, S, F","S, F, M","F, M, S","S, M, F",D
+22,Muito difícil,Flutter,13,15,,15,Quais propriedades Widget.canUpdate compara para decidir se uma nova configuração pode atualizar o Element existente?,runtimeType e key,runtimeType e hashCode,key e identidade da instância,Identidade da instância e filhos,A
+23,Muito difícil,Dart,13,15,,15,"Qual é o resultado de (a: 1, b: 2) == (b: 2, a: 1)?","false, porque os campos aparecem em ordens diferentes","false, porque cada record é uma instância distinta","true, porque os campos nomeados e seus valores coincidem","Erro de compilação, porque a ordem dos campos precisa coincidir",C
+24,Muito difícil,Flutter,13,15,,15,"Um Descendant usa dependOnInheritedWidgetOfExactType durante build. Quando a mesma instância de InheritedElement recebe nova configuração, o que determina se ela notificará seus dependentes por essa atualização?",O resultado de updateShouldNotify ao comparar a configuração nova com a anterior,O resultado de shouldRebuild no Descendant,A quantidade de filhos diretos do InheritedWidget,A identidade dos BuildContexts dos dependentes,A
+25,Muito difícil,Flutter,13,15,,15,Uma Column recebe altura máxima infinita de um ListView vertical. Ela usa mainAxisSize: MainAxisSize.min e tem um filho Expanded. Por que isso falha em modo debug?,Porque ListView exige que todos os filhos sejam slivers,Porque MainAxisSize.min proíbe qualquer filho com flex,Porque Expanded só pode ser usado dentro de Row,Porque Expanded exige preencher uma parcela do espaço restante em um eixo sem limite finito,D
