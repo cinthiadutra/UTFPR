@@ -1,33 +1,50 @@
 /**
  * @file perguntas.h
- * @brief Leitura das perguntas do arquivo CSV.
+ * @brief Carregamento e persistencia das perguntas.
  */
 
-#ifndef PERGUNTAS_H
-#define PERGUNTAS_H
+#ifndef perguntasH
+#define perguntasH
 
-#define TAMANHO_TEXTO_PERGUNTA 512
-#define TAMANHO_ALTERNATIVA 256
+#define tamanhoTextoPergunta 512
+#define tamanhoAlternativa 256
+typedef enum {muitoFacil, FACIL, MEDIO, DIFICIL, muitoDificil}dificuldade;
 
 typedef struct {
     int id;
-    char dificuldade[32];
-    char enunciado[TAMANHO_TEXTO_PERGUNTA];
-    char alternativas[4][TAMANHO_ALTERNATIVA];
-    char resposta_correta;
+    dificuldade nivel;
+    char enunciado[tamanhoTextoPergunta];
+    char alternativas[4][tamanhoAlternativa];
+    char respostaCorreta;
+    /* tema, rodada inicial/final, marco de seguranca e rodada do milhao. */
+    char metadados[5][128];
 } Pergunta;
 
 /**
- * Carrega a primeira pergunta disponivel no CSV.
+ * Copia a primeira pergunta carregada em memoria.
  *
  * @param pergunta estrutura que recebera os dados.
  * @return 1 se a pergunta foi carregada, 0 em caso de erro.
  */
-int perguntas_carregar_primeira(Pergunta *pergunta);
+/* Inicializa pelo binario existente ou importa o CSV na primeira execucao. */
+int perguntasInicializar(void);
+/* Salva todas as perguntas no binario e no CSV. */
+int perguntasSalvar(void);
+void perguntasLiberar(void);
+const char *perguntasNomeNivel(dificuldade nivel);
+
+int perguntasCarregarPrimeira(Pergunta *pergunta);
 
 /**
  * Carrega uma pergunta pelo indice da linha de dados, iniciando em zero.
  */
-int perguntas_carregar_indice(Pergunta *pergunta, int indice);
+int perguntasCarregarIndice(Pergunta *pergunta, int indice);
+
+/* Consultas retornam copias; alteracoes ficam em memoria ate perguntasSalvar. */
+int perguntasQuantidade(void);
+int perguntasPesquisar(const char *termo, int inicio, Pergunta *pergunta);
+int perguntasInserir(const Pergunta *pergunta);
+int perguntasAlterar(int id, const Pergunta *pergunta);
+int perguntasExcluir(int id);
 
 #endif

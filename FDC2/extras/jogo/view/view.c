@@ -8,18 +8,18 @@
 
 #include "raylib.h"
 
-#define WINDOW_WIDTH 1100
-#define WINDOW_HEIGHT 700
+#define windowWidth 1100
+#define windowHeight 700
 
-static Texture2D imagem_fundo;
+static Texture2D imagemFundo;
 
-static const char *menu_items[MENU_TOTAL] = {
+static const char *menuItems[menuTotal] = {
     "Jogar",
     "Perguntas",
     "Sair"
 };
 
-static Texture2D carregar_imagem_fundo(void)
+static Texture2D carregarImagemFundo(void)
 {
     const char *caminhos[] = {
         "assets/bk.png",
@@ -39,43 +39,44 @@ static Texture2D carregar_imagem_fundo(void)
     return (Texture2D){0};
 }
 
-static void desenhar_texto_centralizado(const char *texto, int y, int tamanho,
+static void desenharTextoCentralizado(const char *texto, int y, int tamanho,
                                         Color cor)
 {
-    int largura_texto = MeasureText(texto, tamanho);
-    DrawText(texto, (WINDOW_WIDTH - largura_texto) / 2, y, tamanho, cor);
+    int larguraTexto = MeasureText(texto, tamanho);
+    DrawText(texto, (windowWidth - larguraTexto) / 2, y, tamanho, cor);
 }
 
-void view_desenhar_fundo(void)
+void viewDesenharFundo(void)
 {
-    Rectangle origem = {0, 0, (float)imagem_fundo.width,
-                        (float)imagem_fundo.height};
-    Rectangle destino = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+    Rectangle origem = {0, 0, (float)imagemFundo.width,
+                        (float)imagemFundo.height};
+    Rectangle destino = {0, 0, windowWidth, windowHeight};
 
-    DrawTexturePro(imagem_fundo, origem, destino, (Vector2){0, 0}, 0.0f,
+    DrawTexturePro(imagemFundo, origem, destino, (Vector2){0, 0}, 0.0f,
                    WHITE);
-    DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, (Color){5, 12, 35, 155});
+    DrawRectangle(0, 0, windowWidth, windowHeight, (Color){5, 12, 35, 155});
 }
 
-void view_inicializar(void)
+void viewInicializar(void)
 {
-    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Jogo do Milhao");
+    InitWindow(windowWidth, windowHeight, "Jogo do Milhao");
     SetTargetFPS(60);
-    imagem_fundo = carregar_imagem_fundo();
+    SetExitKey(KEY_NULL);
+    imagemFundo = carregarImagemFundo();
 }
 
-int view_deve_fechar(void)
+int viewDeveFechar(void)
 {
     return WindowShouldClose();
 }
 
-int view_atualizar_menu(int selecionada, int *confirmada)
+int viewAtualizarMenu(int selecionada, int *confirmada)
 {
     if (IsKeyPressed(KEY_DOWN)) {
-        selecionada = (selecionada + 1) % MENU_TOTAL;
+        selecionada = (selecionada + 1) % menuTotal;
     }
     if (IsKeyPressed(KEY_UP)) {
-        selecionada = (selecionada + MENU_TOTAL - 1) % MENU_TOTAL;
+        selecionada = (selecionada + menuTotal - 1) % menuTotal;
     }
     if (IsKeyPressed(KEY_ENTER)) {
         *confirmada = 1;
@@ -84,7 +85,7 @@ int view_atualizar_menu(int selecionada, int *confirmada)
     return selecionada;
 }
 
-void view_desenhar_menu(int selecionada)
+void viewDesenharMenu(int selecionada)
 {
     const Color fundo = (Color){12, 20, 45, 255};
     const Color painel = (Color){22, 35, 75, 255};
@@ -95,44 +96,44 @@ void view_desenhar_menu(int selecionada)
     BeginDrawing();
     ClearBackground(fundo);
 
-    if (view_fundo_disponivel()) {
-        view_desenhar_fundo();
+    if (viewFundoDisponivel()) {
+        viewDesenharFundo();
     }
 
-    DrawCircle(WINDOW_WIDTH / 2, 155, 92, (Color){30, 55, 110, 210});
-    DrawCircleLines(WINDOW_WIDTH / 2, 155, 92, dourado);
-    desenhar_texto_centralizado("JOGO DO MILHAO", 95, 48, dourado);
-    desenhar_texto_centralizado("Fundamentos de Programacao 2", 215, 20,
+    DrawCircle(windowWidth / 2, 155, 92, (Color){30, 55, 110, 210});
+    DrawCircleLines(windowWidth / 2, 155, 92, dourado);
+    desenharTextoCentralizado("JOGO DO MILHAO", 95, 48, dourado);
+    desenharTextoCentralizado("Fundamentos de Programacao 2", 215, 20,
                                 apagado);
 
     DrawRectangleRounded((Rectangle){345, 275, 410, 275}, 0.08f, 12, painel);
 
-    for (int i = 0; i < MENU_TOTAL; i++) {
+    for (int i = 0; i < menuTotal; i++) {
         int y = 305 + i * 75;
 
         if (i == selecionada) {
             DrawRectangleRounded((Rectangle){380, y - 10, 340, 55}, 0.2f, 8,
                                  dourado);
-            desenhar_texto_centralizado(menu_items[i], y, 28, fundo);
+            desenharTextoCentralizado(menuItems[i], y, 28, fundo);
         } else {
-            desenhar_texto_centralizado(menu_items[i], y, 28, branco);
+            desenharTextoCentralizado(menuItems[i], y, 28, branco);
         }
     }
 
-    desenhar_texto_centralizado("Use as setas e ENTER para selecionar", 610, 18,
+    desenharTextoCentralizado("Use as setas e ENTER para selecionar", 610, 18,
                                 apagado);
     EndDrawing();
 }
 
-int view_fundo_disponivel(void)
+int viewFundoDisponivel(void)
 {
-    return IsTextureValid(imagem_fundo);
+    return IsTextureValid(imagemFundo);
 }
 
-void view_finalizar(void)
+void viewFinalizar(void)
 {
-    if (IsTextureValid(imagem_fundo)) {
-        UnloadTexture(imagem_fundo);
+    if (IsTextureValid(imagemFundo)) {
+        UnloadTexture(imagemFundo);
     }
     CloseWindow();
 }

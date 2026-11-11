@@ -3,8 +3,8 @@
  * @brief Assinaturas e tipos principais do sistema.
  */
 
-#ifndef SISTEMA_H
-#define SISTEMA_H
+#ifndef sistemaH
+#define sistemaH
 
 #include "perguntas/perguntas.h"
 
@@ -12,21 +12,22 @@
  * Opcoes disponiveis no menu principal.
  */
 typedef enum {
-    MENU_JOGAR,
-    MENU_PERGUNTAS,
-    MENU_SAIR,
-    MENU_TOTAL
+    menuJogar,
+    menuPerguntas,
+    menuSair,
+    menuTotal
 } OpcaoMenu;
 
 typedef enum {
-    TELA_MENU,
-    TELA_PERGUNTA,
-    TELA_PERDEU
+    telaMenu,
+    telaPergunta,
+    telaGerenciar,
+    telaPerdeu
 } TelaAtual;
 
 /**
  * Executa o fluxo principal do sistema.
  */
-void sistema_executar(void);
+void sistemaExecutar(void);
 
 #endif

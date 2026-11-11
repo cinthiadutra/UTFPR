@@ -4,106 +4,121 @@
  */
 
 #include "sistema.h"
-#include "view/pergunta_view.h"
+#include "view/perguntaView.h"
 #include "view/view.h"
+#include "view/gerenciarView.h"
 
 #include <stdio.h>
 
-void sistema_executar(void)
+void sistemaExecutar(void)
 {
-    int opcao_selecionada = MENU_JOGAR;
+    int opcaoSelecionada = menuJogar;
     int confirmada = 0;
-    int alternativa_selecionada = 0;
-    int pergunta_respondida = 0;
-    int resposta_correta = 0;
-    int indice_pergunta = 0;
-    int opcao_derrota = DERROTA_REINICIAR;
-    TelaAtual tela = TELA_MENU;
-    Pergunta primeira_pergunta;
+    int alternativaSelecionada = 0;
+    int perguntaRespondida = 0;
+    int respostaCorreta = 0;
+    int indicePergunta = 0;
+    int opcaoDerrota = derrotaReiniciar;
+    TelaAtual tela = telaMenu;
+    Pergunta primeiraPergunta;
 
-    view_inicializar();
+    if (!perguntasInicializar()) {
+        fprintf(stderr, "Nao foi possivel carregar as perguntas.\n");
+        return;
+    }
 
-    while (!view_deve_fechar()) {
-        if (tela == TELA_PERGUNTA) {
-            alternativa_selecionada = pergunta_view_atualizar(
-                alternativa_selecionada, pergunta_respondida, &confirmada);
+    viewInicializar();
 
-            if (alternativa_selecionada < 0) {
-                tela = TELA_MENU;
-                alternativa_selecionada = 0;
-                pergunta_respondida = 0;
+    while (!viewDeveFechar()) {
+        if (tela == telaGerenciar) {
+            if (gerenciarView()) tela = telaMenu;
+            continue;
+        }
+
+        if (tela == telaPergunta) {
+            alternativaSelecionada = perguntaViewAtualizar(
+                alternativaSelecionada, perguntaRespondida, &confirmada);
+
+            if (alternativaSelecionada < 0) {
+                tela = telaMenu;
+                alternativaSelecionada = 0;
+                perguntaRespondida = 0;
                 confirmada = 0;
-            } else if (confirmada && !pergunta_respondida) {
-                resposta_correta =
-                    'A' + alternativa_selecionada ==
-                    primeira_pergunta.resposta_correta;
-                if (resposta_correta) {
-                    indice_pergunta++;
-                    alternativa_selecionada = 0;
+            } else if (confirmada && !perguntaRespondida) {
+                respostaCorreta =
+                    'A' + alternativaSelecionada ==
+                    primeiraPergunta.respostaCorreta;
+                if (respostaCorreta) {
+                    indicePergunta++;
+                    alternativaSelecionada = 0;
                     confirmada = 0;
-                    if (!perguntas_carregar_indice(&primeira_pergunta,
-                                                   indice_pergunta)) {
-                        tela = TELA_MENU;
-                        indice_pergunta = 0;
+                    if (!perguntasCarregarIndice(&primeiraPergunta,
+                                                   indicePergunta)) {
+                        tela = telaMenu;
+                        indicePergunta = 0;
                     }
                 } else {
-                    pergunta_respondida = 1;
-                    tela = TELA_PERDEU;
+                    perguntaRespondida = 1;
+                    tela = telaPerdeu;
                 }
             }
-            if (tela == TELA_PERGUNTA) {
-                pergunta_view_desenhar(&primeira_pergunta,
-                                       alternativa_selecionada,
-                                       pergunta_respondida, resposta_correta);
+            if (tela == telaPergunta) {
+                perguntaViewDesenhar(&primeiraPergunta,
+                                       alternativaSelecionada,
+                                       perguntaRespondida, respostaCorreta);
             }
             continue;
         }
 
-        if (tela == TELA_PERDEU) {
-            opcao_derrota = pergunta_view_atualizar_perdeu(
-                opcao_derrota, &confirmada);
-            if (confirmada && opcao_derrota == DERROTA_REINICIAR) {
-                if (!perguntas_carregar_primeira(&primeira_pergunta)) {
+        if (tela == telaPerdeu) {
+            opcaoDerrota = perguntaViewAtualizarPerdeu(
+                opcaoDerrota, &confirmada);
+            if (confirmada && opcaoDerrota == derrotaReiniciar) {
+                if (!perguntasCarregarPrimeira(&primeiraPergunta)) {
                     fprintf(stderr, "Nao foi possivel reiniciar a partida.\n");
                     break;
                 }
-                tela = TELA_PERGUNTA;
-                indice_pergunta = 0;
-                alternativa_selecionada = 0;
-                pergunta_respondida = 0;
-                resposta_correta = 0;
+                tela = telaPergunta;
+                indicePergunta = 0;
+                alternativaSelecionada = 0;
+                perguntaRespondida = 0;
+                respostaCorreta = 0;
                 confirmada = 0;
-            } else if (confirmada && opcao_derrota == DERROTA_SAIR) {
+            } else if (confirmada && opcaoDerrota == derrotaSair) {
                 break;
             }
-            pergunta_view_desenhar_perdeu(opcao_derrota);
+            perguntaViewDesenharPerdeu(opcaoDerrota);
             continue;
         }
 
-        opcao_selecionada = view_atualizar_menu(opcao_selecionada, &confirmada);
+        opcaoSelecionada = viewAtualizarMenu(opcaoSelecionada, &confirmada);
 
         if (confirmada) {
-            if (opcao_selecionada == MENU_JOGAR) {
-                if (perguntas_carregar_primeira(&primeira_pergunta)) {
-                    tela = TELA_PERGUNTA;
-                    indice_pergunta = 0;
-                    alternativa_selecionada = 0;
-                    pergunta_respondida = 0;
-                    resposta_correta = 0;
-                    opcao_derrota = DERROTA_REINICIAR;
+            if (opcaoSelecionada == menuJogar) {
+                if (perguntasCarregarPrimeira(&primeiraPergunta)) {
+                    tela = telaPergunta;
+                    indicePergunta = 0;
+                    alternativaSelecionada = 0;
+                    perguntaRespondida = 0;
+                    respostaCorreta = 0;
+                    opcaoDerrota = derrotaReiniciar;
                 } else {
                     fprintf(stderr, "Nao foi possivel carregar a pergunta.\n");
                 }
-            } else if (opcao_selecionada == MENU_PERGUNTAS) {
-                printf("Opcao selecionada: Perguntas\n");
-            } else if (opcao_selecionada == MENU_SAIR) {
+            } else if (opcaoSelecionada == menuPerguntas) {
+                tela = telaGerenciar;
+            } else if (opcaoSelecionada == menuSair) {
                 break;
             }
             confirmada = 0;
         }
 
-        view_desenhar_menu(opcao_selecionada);
+        viewDesenharMenu(opcaoSelecionada);
     }
 
-    view_finalizar();
+    if (!perguntasSalvar()) {
+        fprintf(stderr, "Nao foi possivel salvar as perguntas no binario e no CSV.\n");
+    }
+    perguntasLiberar();
+    viewFinalizar();
 }

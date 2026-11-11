@@ -1,1 +1,5 @@
 jogo
+
+*.o
+perguntas/perguntas.bin
+perguntas/perguntas.bin.tmp

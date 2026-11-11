@@ -7,6 +7,6 @@
 
 int main(void)
 {
-    sistema_executar();
+    sistemaExecutar();
     return 0;
 }
