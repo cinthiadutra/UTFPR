@@ -21,7 +21,7 @@ float calculeMediaArit(float a, float b, float c)
 }
 float calculeMediaPond(float a, float b, float c)
 {
-    return (a + b + c) / 5 + 3 + 2;
+    return ((a * 5) + (b * 3) + (c * 2)) / (5+3+2);
 }
 
 int main()
@@ -30,12 +30,12 @@ int main()
     char opcao;
     for (int i = 0; i < 3; i++)
     {
-        printf("Digite sua nota na p%d:", i);
+        printf("Digite sua nota na p%d:", i + 1);
         scanf("%f", &notas[i]);
+        getchar();
     }
     printf("Escolha o tipo de media P para ponderada e A para aritmetica :");
     scanf("%c", &opcao);
-    getchar();
 
     switch (opcao)
     {
