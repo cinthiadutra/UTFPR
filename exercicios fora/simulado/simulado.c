@@ -103,49 +103,54 @@ int main()
 {
     FILE *arquivo;
     Jogador *jogadores;
-    int capacidade, vitorias, derrotas, quantidade;
+    Jogador *jogadoresTemp;
 
-    arquivo = fopen("players.dat", "a");
+    int capacidade, vitorias, derrotas, quantidade, i;
+
+    arquivo = fopen("players.dat", "wb");
     if (arquivo == NULL)
     {
         printf("Erro ao criar o arquivo!\n");
         return 1;
     }
     jogadores = malloc(5 * sizeof(Jogador));
-    capacidade = 5;
-
-    for (size_t i = 0; i < capacidade; i++)
+    if (jogadores == NULL)
     {
-        while (strcmp(jogadores[i].pais, "fim") == 1)
-        {
+        perror("Erro ao realocar!");
+        exit(EXIT_FAILURE);
+    } // else
+    capacidade = 5;
+    i = 0;
+    printf("Entre com o nome do pais:");
+    fgets(jogadores[i].pais, 20, stdin);
+    jogadores[i].pais[strcspn(jogadores[i].pais, "\n")] = '\0';
+    setbuf(stdin, NULL);
+    while (strcmp(jogadores[i].pais, "fim") != 0 && capacidade != 0)
+    {
 
-            printf("Entre com o nome do pais:");
-            fgets(jogadores[i].pais, 21, stdin);
-            jogadores[i].pais[strcspn(jogadores[i].pais, "\n")] = '\0';
-            setbuf(stdin, NULL);
+        printf("Entre com o nome do Jogador:");
+        fgets(jogadores[i].nickname, 20, stdin);
+        jogadores[i].nickname[strcspn(jogadores[i].nickname, "\n")] = '\0';
+        setbuf(stdin, NULL);
 
-            printf("Entre com o nome do Jogador:");
-            fgets(jogadores[i].nickname, 21, stdin);
-            jogadores[i].nickname[strcspn(jogadores[i].nickname, "\n")] = '\0';
-            setbuf(stdin, NULL);
+        printf("Entre com o numero de vitorias do Jogador:");
+        scanf(" %d", &vitorias);
+        getchar();
 
-            printf("Entre com o numero de vitorias do Jogador:");
-            scanf(" %d", &vitorias);
+        printf("Entre com o numero de derrotas do Jogador:");
+        scanf(" %d", &derrotas);
+        getchar();
+        quantidade = i;
+        i++;
+        fwrite(jogadores, sizeof(Jogador), quantidade, arquivo);
+        fclose(arquivo);
+     
+    }
 
-            printf("Entre com o numero de derrotas do Jogador:");
-            scanf("%d", &derrotas);
-            quantidade = 1;
-            fwrite(jogadores, sizeof(Jogador), quantidade, arquivo);
-            fclose(arquivo);
-            for (int i = 5; i > capacidade; i++)
-            {
-                jogadores = realloc(jogadores, 5);
-            }
-        }
+    {
         jogadores = realloc(jogadores, i);
         fwrite(jogadores, sizeof(Jogador), quantidade, arquivo);
         fclose(arquivo);
-        exit(EXIT_FAILURE);
     }
     somaPorPais(jogadores);
 
