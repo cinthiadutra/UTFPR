@@ -12,91 +12,88 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "players.h"
 
-typedef struct
+void imprimirRelatorio(
+    const char *paises[],
+    int vitorias[],
+    int derrotas[])
 {
-    char pais[20];
-    char nickname[20];
-    int vitorias;
-    int derrotas;
+    FILE *arquivo = fopen("ranking_report.txt", "w");
 
-} Jogador;
-
-void alocar(int tam)
-{
-    Jogador *vetJogTemp;
-    Jogador *vetJog = calloc(tam, sizeof(Jogador));
-
-    if (vetJog == NULL)
+    if (arquivo == NULL)
     {
-        vetJogTemp = realloc(vetJog, 10 * sizeof(int));
-        if (vetJogTemp != NULL)
+        printf("Erro ao criar o relatorio.\n");
+        return;
+    }
+
+    printf("PAIS       |WINS |LOSSES| WINRATE|\n");
+    fprintf(arquivo, "PAIS       |WINS |LOSSES| WINRATE|\n");
+
+    for (int p = 0; p < 6; p++)
+    {
+        int partidas = vitorias[p] + derrotas[p];
+        int winrate = 0;
+
+        if (partidas > 0)
         {
-            vetJog = vetJogTemp;
+            winrate = (int)(100.0 * vitorias[p] / partidas);
         }
-        else
+
+        printf("%-11s|%5d|%6d|%7d%%|\n",
+               paises[p], vitorias[p], derrotas[p], winrate);
+
+        fprintf(arquivo, "%-11s|%5d|%6d|%7d%%|\n",
+                paises[p], vitorias[p], derrotas[p], winrate);
+    }
+
+    if (fclose(arquivo) != 0)
+    {
+        printf("Erro ao finalizar o arquivo.\n");
+        return;
+    }
+
+    printf("\nRelatorio salvo em ranking_report.txt\n");
+}
+
+void somaPorPais(Jogador jog[], int quantidade)
+{
+    const char *paises[6] = {
+        "Brasil", "EUA", "França",
+        "Inglaterra", "China", "Japão"};
+
+    const char *minusculos[6] = {
+        "brasil", "eua", "frança",
+        "inglaterra", "china", "japão"};
+
+    int vitorias[6] = {0};
+    int derrotas[6] = {0};
+
+    for (int p = 0; p < 6; p++)
+    {
+        for (int i = 0; i < quantidade; i++)
         {
-            perror("Erro ao realocar!");
-        } // else
-    }
-}
+            int mesmoPais =
+                strcmp(jog[i].pais, paises[p]) == 0 ||
+                strcmp(jog[i].pais, minusculos[p]) == 0;
 
-// void calculoFinal(int wins, int loss , int tam)
-// {
-//     int somaBrasil, somaEUA, somaFranca,somaInglaterra,somaChina,somaJapao;
-//     int somaBrasilD, somaEUAD, somaFrancaD,somaInglaterraD,somaChinaD,somaJapaoD;
+            if (p == 5 &&
+                (strcmp(jog[i].pais, "Japao") == 0 ||
+                 strcmp(jog[i].pais, "japao") == 0))
+            {
+                mesmoPais = 1;
+            }
 
-//     Jogador jogador[tam];
-//     for (int i =0; i<tam; i++){
-//        if(jogador[i].pais =="Brasil"||jogador[i].pais =="brasil"){
-//         somaBrasil = jogador.
-//     }
-
-// }
-
-int somaV(Jogador jog[], int v)
-{
-    if (v == 0)
-    {
-        return 0;
+            if (mesmoPais)
+            {
+                vitorias[p] += jog[i].vitorias;
+                derrotas[p] += jog[i].derrotas;
+            }
+        }
     }
 
-    return jog[v - 1].vitorias + somaV(jog, v - 1);
-}
-int somaT(Jogador jog[], int v)
-{
-    if (v == 0)
-    {
-        return 0;
-    }
-
-    return jog[v - 1].derrotas + somaT(jog, v - 1);
-}
-
-int calculeWinrate(int der, int vit)
-{
-
-    return (vit / (vit + der)) * 100;
-}
-
-void somaPorPais(Jogador jog[])
-{
-    if (strcmp(jog->pais, "Brasil") == 0 || strcmp(jog->pais, "brasil") == 0)
-        printf("Brasil | %d  | %d | %d %%", somaV(jog, 5), somaT(jog, 5), calculeWinrate(somaV(jog, 5), somaT(jog, 5)));
-    else if (strcmp(jog->pais, "EUA") == 0 || strcmp(jog->pais, "eua") == 0)
-        printf("EUA | %d  | %d | %d %%", somaV(jog, 5), somaT(jog, 5), calculeWinrate(somaV(jog, 5), somaT(jog, 5)));
-
-    else if (strcmp(jog->pais, "França") == 0 || strcmp(jog->pais, "frança") == 0)
-        printf("França | %d  | %d | %d %%", somaV(jog, 5), somaT(jog, 5), calculeWinrate(somaV(jog, 5), somaT(jog, 5)));
-
-    else if (strcmp(jog->pais, "Inglaterra") == 0 || strcmp(jog->pais, "inglaterra") == 0)
-        printf("Inglaterra | %d  | %d | %d %%", somaV(jog, 5), somaT(jog, 5), calculeWinrate(somaV(jog, 5), somaT(jog, 5)));
-
-    else if (strcmp(jog->pais, "China") == 0 || strcmp(jog->pais, "china") == 0)
-        printf("China | %d  | %d | %d %%", somaV(jog, 5), somaT(jog, 5), calculeWinrate(somaV(jog, 5), somaT(jog, 5)));
-
-    else if (strcmp(jog->pais, "Japao") == 0 || strcmp(jog->pais, "japao") == 0 || strcmp(jog->pais, "Japão") == 0 || strcmp(jog->pais, "japão") == 0)
-        printf("Japão | %d  | %d | %d %%", somaV(jog, 5), somaT(jog, 5), calculeWinrate(somaV(jog, 5), somaT(jog, 5)));
+    /* Só imprime depois de calcular todos os países. */
+    imprimirRelatorio(paises, vitorias, derrotas);
 }
 
 int main()
@@ -104,9 +101,10 @@ int main()
     FILE *arquivo;
     Jogador *jogadores;
     Jogador *jogadoresTemp;
+    char pais[20];
 
-    int capacidade, vitorias, derrotas, quantidade, i;
-
+    int capacidade = 5;
+    int quantidade = 0;
     arquivo = fopen("players.dat", "wb");
     if (arquivo == NULL)
     {
@@ -119,40 +117,71 @@ int main()
         perror("Erro ao realocar!");
         exit(EXIT_FAILURE);
     } // else
-    capacidade = 5;
-    i = 0;
-    printf("Entre com o nome do pais:");
-    fgets(jogadores[i].pais, 20, stdin);
-    jogadores[i].pais[strcspn(jogadores[i].pais, "\n")] = '\0';
-    setbuf(stdin, NULL);
-    while (strcmp(jogadores[i].pais, "fim") != 0 && capacidade != 0)
+
+    while (1)
     {
+        printf("Entre com um dos paises [Brasil, EUA, França, Inglaterra, China e Japão]: ");
+
+        if (scanf("%19s", pais) != 1)
+        {
+            free(jogadores);
+            return 1;
+        }
+
+        if (strcmp(pais, "fim") == 0)
+        {
+            break;
+        }
+
+        if (quantidade == capacidade)
+        {
+          int  novaCapacidade = capacidade+5;
+            Jogador *temporario = realloc(
+                jogadores, novaCapacidade * (sizeof(Jogador)));
+
+            if (temporario == NULL)
+            {
+                printf("Erro ao aumentar o vetor.\n");
+                free(jogadores);
+                return 1;
+            }
+
+            jogadores = temporario;
+            capacidade += 5;
+        }
+
+        strcpy(jogadores[quantidade].pais, pais);
 
         printf("Entre com o nome do Jogador:");
-        fgets(jogadores[i].nickname, 20, stdin);
-        jogadores[i].nickname[strcspn(jogadores[i].nickname, "\n")] = '\0';
-        setbuf(stdin, NULL);
+        scanf(" %19s", jogadores[quantidade].nickname);
 
         printf("Entre com o numero de vitorias do Jogador:");
-        scanf(" %d", &vitorias);
+        scanf(" %d", &jogadores[quantidade].vitorias);
         getchar();
 
         printf("Entre com o numero de derrotas do Jogador:");
-        scanf(" %d", &derrotas);
+        scanf(" %d", &jogadores[quantidade].derrotas);
         getchar();
-        quantidade = i;
-        i++;
-        fwrite(jogadores, sizeof(Jogador), quantidade, arquivo);
-        fclose(arquivo);
-     
+        quantidade++;
     }
 
+    jogadoresTemp = realloc(jogadores, (capacidade + quantidade) * sizeof(Jogador));
+
+    if (jogadoresTemp == NULL)
     {
-        jogadores = realloc(jogadores, i);
-        fwrite(jogadores, sizeof(Jogador), quantidade, arquivo);
-        fclose(arquivo);
+        free(jogadores);
+        return 1;
     }
-    somaPorPais(jogadores);
+
+    jogadores = jogadoresTemp;
+    capacidade += 5;
+
+    fwrite(jogadores, sizeof(Jogador), quantidade, arquivo);
+    jogadoresTemp = realloc(jogadores, (quantidade) * sizeof(Jogador));
+
+    fclose(arquivo);
+
+    somaPorPais(jogadores, quantidade);
 
     free(jogadores);
     fopen("players.dat", "rb");
