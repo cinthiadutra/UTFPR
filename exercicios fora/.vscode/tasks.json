@@ -5,6 +5,8 @@
             "label": "C/C++: clang arquivo de build ativo",
             "command": "/usr/bin/clang",
             "args": [
+                "-isysroot",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk",
                 "-fcolor-diagnostics",
                 "-fansi-escape-codes",
                 "-g",

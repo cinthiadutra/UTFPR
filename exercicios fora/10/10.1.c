@@ -16,12 +16,14 @@
 
 int main()
 {
-   int * arrt = malloc(5 * sizeof(arrt));
+    int *arrt = malloc(5 * sizeof(int));
     for (int i = 0; i < 5; i++)
     {
         printf("Escreva o numero %d", i);
         scanf("%d", &arrt[i]);
     }
-
-    printf("%d", *arrt);
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%d", arrt[i]);
+    }
 }

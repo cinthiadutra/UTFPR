@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     'exercicios fora/10/output/10.1'
+relocations:     []
+...

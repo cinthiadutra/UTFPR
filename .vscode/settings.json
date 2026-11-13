@@ -1,4 +1,5 @@
 {
+  "c-cpp-compile-run.c-flags": "-Wall -Wextra -g3 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk",
   "[c]": {
     "editor.defaultFormatter": "ms-vscode.cpptools",
     "editor.formatOnSave": true

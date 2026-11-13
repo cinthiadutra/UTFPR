@@ -5,6 +5,8 @@
             "label": "C/C++: gcc arquivo de build ativo",
             "command": "/usr/bin/gcc",
             "args": [
+                "-isysroot",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk",
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
